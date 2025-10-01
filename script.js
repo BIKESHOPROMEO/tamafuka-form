@@ -21,11 +21,12 @@ function submitUnavailable() {
 
   // POSTデータ作成
   const payload = {
-    date,
-    start,
-    end,
-    reason
-  };
+  action: "unavailable", // ← これがGASの分岐キー！
+  date,
+  start,
+  end,
+  reason
+};
 
   // GASへ送信
   fetch('/api/fuka', {
