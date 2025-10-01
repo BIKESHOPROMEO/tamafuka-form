@@ -35,9 +35,8 @@ async function submitUnavailable() {
     });
 
     if (!res.ok) throw new Error('登録に失敗しました');
-    const msg = await res.text();
-
-    resultEl.textContent = '予約不可を登録しました';
+    const msg = await res.json();
+    resultEl.textContent = msg.message || '予約不可を登録しました';
     resultEl.style.color = 'green';
     document.getElementById('date').value = '';
     document.getElementById('start').value = '10:00';
