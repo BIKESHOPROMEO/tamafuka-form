@@ -68,3 +68,22 @@ button:hover {
   font-size: 0.95rem;
   text-align: center;
 }
+
+.loading-overlay {
+  display: none;
+  /* その他のスタイル */
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+}
+
+button:hover {
+  background-color: #1976D2;
+}
