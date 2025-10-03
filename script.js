@@ -27,15 +27,15 @@ function hideLoading() {
     return;
   }
 
+  showLoading(); // ← クルクル開始！
+
   const payload = {
     action: "unavailable", // ← これがGASの分岐キー！
     date,
     start,
     end,
     reason
-  };
-
-  showLoading(); // ← クルクル開始！
+  };  
 
   try {
     const res = await fetch('/api/fuka', {
