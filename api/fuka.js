@@ -1,30 +1,36 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
+  console.log("予約不可リクエスト受信:", req.body);
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const { date, start, end, reason } = req.body;
-
-  const GAS_URL = 'hhttps://script.google.com/macros/s/AKfycbwvqxdEp4sWhAACzZRlPe9LzNdNxg2lY5XvIh_uRcfWJHMTnKlFaetKAdwSPdiGzTtwDg/exec'; // ← GASのWebアプリURLに差し替え！
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbwvqxdEp4sWhAACzZRlPe9LzNdNxg2lY5XvIh_uRcfWJHMTnKlFaetKAdwSPdiGzTtwDg/exec";
+  const data = req.body;
 
   try {
-    const response = await fetch(GAS_URL, {
-      method: 'POST',
+    const gasRes = await fetch(GAS_URL, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ date, start, end, reason })
+      body: JSON.stringify(data)
     });
 
-    const text = await response.text();
+    const text = await gasRes.text();
+    console.log("GASレスポンス:", text);
 
-    if (!response.ok) {
-      return res.status(500).json({ success: false, message: 'GAS登録失敗' });
+    try {
+      const result = JSON.parse(text);
+      return res.status(200).json(result);
+    } catch (err) {
+      return res.status(500).json({
+        message: "GASからのレスポンスがJSONではありません",
+        raw: text
+      });
     }
-
-    return res.status(200).json({ success: true, message: text });
   } catch (err) {
-    console.error('GAS通信エラー:', err);
-    return res.status(500).json({ success: false, message: '通信エラー' });
+    console.error("fuka.js通信エラー:", err);
+    return res.status(500).json({ message: "fuka.js通信エラー", error: err.message });
   }
 }
