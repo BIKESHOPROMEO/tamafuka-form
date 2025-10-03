@@ -5,6 +5,16 @@ async function submitUnavailable() {
   const reason = document.getElementById('reason').value;
   const resultEl = document.getElementById('result');
 
+  function showLoading() {
+  const loadingEl = document.getElementById('loading');
+  if (loadingEl) loadingEl.style.display = 'flex';
+}
+
+function hideLoading() {
+  const loadingEl = document.getElementById('loading');
+  if (loadingEl) loadingEl.style.display = 'none';
+}
+
   if (!date || !start || !end) {
     resultEl.textContent = '日付と時間を選択してください';
     resultEl.style.color = 'red';
@@ -24,6 +34,8 @@ async function submitUnavailable() {
     end,
     reason
   };
+
+  showLoading(); // ← クルクル開始！
 
   try {
     const res = await fetch('/api/fuka', {
@@ -46,5 +58,7 @@ async function submitUnavailable() {
     console.error('登録エラー:', err);
     resultEl.textContent = '登録に失敗しました';
     resultEl.style.color = 'red';
+  } finally {
+    hideLoading(); // ← クルクル終了！
   }
 }
