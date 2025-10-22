@@ -10,6 +10,7 @@ async function submitUnavailable() {
   if (loadingEl) loadingEl.style.display = 'flex';
 }
 
+  
 function hideLoading() {
   const loadingEl = document.getElementById('loading');
   if (loadingEl) loadingEl.style.display = 'none';
@@ -62,3 +63,4 @@ function hideLoading() {
     hideLoading(); // ← クルクル終了！
   }
 }
+
